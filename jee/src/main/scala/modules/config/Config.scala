@@ -25,7 +25,8 @@ trait Config {
   // ScalikeJDBC設定
   def scalikeJDBCLogLevel = 'DEBUG
 
-  // デフォルトデータベース設定
+  // デフォルトデータベース設定. 環境にJNDIがなければJDBC URLでの接続にフォールバックする
+  def defaultJNDIDataSourceName = "jdbc/%s".format(projectName)
   def defaultDatabaseURL:String = modules.h2.getMySQLCompatibleH2InMemoryDatabaseURL(projectName)
   def defaultDatabaseMigrationLocations:Option[String] = Some("db/%s/migration".format(projectName))
   def defaultDatabaseUser:String = "sa"

@@ -4,10 +4,10 @@ create table wikipedia_cache (
     content text,
     canonical_url varchar(256),
     last_modified timestamp not null,
-    fetched_at timestamp not null default current_date
+    fetched_at timestamp not null default current_timestamp
 );
 
 create table wikipedia_clients (
     ip_address varchar(64) not null primary key,
-    fetched_at timestamp not null default current_date
+    fetched_at timestamp not null default current_timestamp
 );

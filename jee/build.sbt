@@ -12,7 +12,7 @@ buildProperties := {
 
 name := Option(buildProperties.value.getProperty("name")).getOrElse("playground")
 scalaVersion := Option(buildProperties.value.getProperty("scalaVersion")).getOrElse("2.11.8")
-version := Option(buildProperties.value.getProperty("version")).getOrElse("0.20160809")
+version := Option(buildProperties.value.getProperty("version")).getOrElse("0.20160815")
 scalacOptions ++= Seq("-feature", "-deprecation")
 mainClass in (Compile, run) := Some("Main")
 
@@ -27,7 +27,7 @@ libraryDependencies += "mysql" % "mysql-connector-java" % "6.0.3" // http://mvnr
 libraryDependencies += "joda-time" % "joda-time" % "2.9.4"  // http://mvnrepository.com/artifact/joda-time/joda-time
 libraryDependencies += "ch.qos.logback" % "logback-classic" % "1.1.7" // http://mvnrepository.com/artifact/ch.qos.logback/logback-classic
 libraryDependencies += "com.typesafe.scala-logging" % "scala-logging-slf4j_2.11" % "2.1.2" // http://mvnrepository.com/artifact/com.typesafe.scala-logging/scala-logging-slf4j_2.11
-libraryDependencies += "org.slf4j" % "jcl-over-slf4j" % "1.7.21"  // http://mvnrepository.com/artifact/org.slf4j/jcl-over-slf4j
+libraryDependencies += "org.slf4j" % "slf4j-jdk14" % "1.7.21" // for tomcat: https://mvnrepository.com/artifact/org.slf4j/slf4j-jdk14
 libraryDependencies += "org.jsoup" % "jsoup" % "1.9.2"  // http://mvnrepository.com/artifact/org.jsoup/jsoup
 libraryDependencies += "com.mashape.unirest" % "unirest-java" % "1.4.9" // http://mvnrepository.com/artifact/com.mashape.unirest/unirest-java
 libraryDependencies += "com.opencsv" % "opencsv" % "3.8" // http://mvnrepository.com/artifact/com.opencsv/opencsv

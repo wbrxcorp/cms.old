@@ -12,7 +12,14 @@ package object scalikejdbc extends com.typesafe.scalalogging.slf4j.LazyLogging {
   )
 
   def initDefaultDatabase():Unit = {
-    ConnectionPool.singleton(config.defaultDatabaseURL, config.defaultDatabaseUser, config.defaultDatabasePassword)
+    modules.jndi.getDataSourceFromJNDI(config.defaultJNDIDataSourceName) match {
+      case Some(dataSource) =>
+      logger.info("Initializing default database by JNDI")
+        ConnectionPool.singleton(new _root_.scalikejdbc.DataSourceConnectionPool(dataSource))
+      case None =>
+        logger.info("Initializing default database by JDBC URL")
+        ConnectionPool.singleton(config.defaultDatabaseURL, config.defaultDatabaseUser, config.defaultDatabasePassword)
+    }
   }
 
   def p(query:_root_.scalikejdbc.SQL[Nothing,_root_.scalikejdbc.NoExtractor])(implicit session:_root_.scalikejdbc.DBSession):Unit = {
