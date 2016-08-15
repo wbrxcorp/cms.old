@@ -1,6 +1,6 @@
 package modules.cms
 
-import scalikejdbc.NamedDB
+import scalikejdbc.DB
 import org.scalatra.{UnsupportedMediaType,BadRequest,Ok}
 import modules.scalatra.{Success,Failure}
 
@@ -39,7 +39,7 @@ class Api extends modules.scalatra.JsonSupport with modules.scalatra.LogErrors {
 
   def withUser[T](f:User=>T):T = {
     val userId = getCurrentUserId.getOrElse(halt(403, "You must be authenticated"))
-    val user = NamedDB("cms") readOnly { implicit session =>
+    val user = DB readOnly { implicit session =>
       val name = sql"select name from users where id=${userId}".map(_.string(1)).single.apply.getOrElse(halt(403, "User does not exist (deleted?)"))
       User(userId, name)
     }
