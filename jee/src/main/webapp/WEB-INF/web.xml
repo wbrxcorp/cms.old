@@ -1,0 +1,52 @@
+<web-app xmlns="http://java.sun.com/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+         version="2.5">
+    <listener>
+        <listener-class>org.scalatra.servlet.ScalatraListener</listener-class>
+    </listener>
+
+    <servlet>
+      <servlet-name>FakePHP</servlet-name>
+      <servlet-class>modules.fakephp.FakePHPServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>FakePHP</servlet-name>
+        <url-pattern>*.php</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+      <servlet-name>FakeSSI</servlet-name>
+      <servlet-class>modules.fakessi.FakeSSIServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>FakeSSI</servlet-name>
+        <url-pattern>*.shtml</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+      <servlet-name>Markdown</servlet-name>
+      <servlet-class>modules.markdown.MarkdownServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Markdown</servlet-name>
+        <url-pattern>*.md</url-pattern>
+    </servlet-mapping>
+
+    <filter>
+      <filter-name>Compress</filter-name>
+      <filter-class>modules.yuicompressor.CompressFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>Compress</filter-name>
+        <url-pattern>*.min.js</url-pattern>
+        <url-pattern>*.min.css</url-pattern>
+    </filter-mapping>
+
+    <welcome-file-list>
+      <welcome-file>index.md</welcome-file>
+      <welcome-file>index.php</welcome-file>
+      <welcome-file>index.shtml</welcome-file>
+      <welcome-file>index.html</welcome-file>
+    </welcome-file-list>
+  </web-app>

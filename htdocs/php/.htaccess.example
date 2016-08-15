@@ -1,0 +1,6 @@
+#for apache <= 2.2
+#order deny,allow
+#deny from all
+
+#for apache >= 2.4
+#require all denied

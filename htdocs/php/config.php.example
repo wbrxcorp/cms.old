@@ -1,0 +1,21 @@
+<?php
+if (php_sapi_name() == "cli") {
+  // from command line
+  define("DBHOST", "localhost");
+  define("DBNAME", "playground-test");
+  define("DBUSER", "playground");
+  define("DBPASSWORD", "");
+} else if (php_sapi_name() == "cli-server") {
+  // embedded webserver
+  define("DBHOST", "localhost");
+  define("DBNAME", "playground-development");
+  define("DBUSER", "playground");
+  define("DBPASSWORD", "");
+} else {
+  // other for production
+  define("DBHOST", "localhost");
+  define("DBNAME", "playground");
+  define("DBUSER", "playground");
+  define("DBPASSWORD", "");
+}
+?>

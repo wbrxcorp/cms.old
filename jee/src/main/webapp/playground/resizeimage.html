@@ -1,0 +1,74 @@
+<html>
+<head>
+  <title>resizeimage</title>
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/2.0.0/ui-bootstrap-tpls.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/danialfarid-angular-file-upload/12.0.4/ng-file-upload.js"></script>
+  <script>
+    angular.module("resizeimage", ["ui.bootstrap","ngFileUpload"])
+    .run(["$rootScope", "$window", "Upload",  function($scope, $window, Upload) {
+      $scope.entity = {
+        image: null
+      };
+
+      // "NO IMAGE" 画像を生成
+      var drawImage = function(width, height, drawfunc) {
+        var cvs = document.createElement("canvas");
+        cvs.width = width;
+        cvs.height = height;
+        var ctx = cvs.getContext("2d");
+        drawfunc(ctx);
+        return cvs.toDataURL();
+      }
+
+      var noImage = drawImage(160, 120, function(ctx) {
+        ctx.fillStyle = "lightgray";
+        ctx.fillRect(0,0,160,120);
+        ctx.fillStyle = "darkgray";
+        ctx.font = "24px arial";
+        ctx.textAlign = "center";
+        ctx.fillText("NO IMAGE", 80, 64);
+      });
+
+      $scope.setImage = function(object, propertyName, file, sizespec) {
+        if (!object || !propertyName || !file) return;
+        if (!sizespec) sizespec = "1024x768";
+        if (file.type.indexOf("image/") !== 0) {
+          $window.alert("画像ファイルではありません");
+          return;
+        }
+        Upload.http({
+          url:"./resizeimage/" + sizespec,
+          headers: { "Content-Type": file.type },
+          data: file
+        }).success(function(data) {
+          object[propertyName] = data;
+        }).error(function(data, status) {
+          $window.alert("画像ファイルのアップロードに失敗しました。ファイルが破損しているか、非対応の形式か、サイズが大きすぎるなどの原因が考えられます (" + status + ")");
+        });
+      };
+      $scope.getImage = function(image) {
+        if (!image) return noImage; // else
+        if (image.indexOf("data:") === 0) return image;
+        // else
+        return "/playground/blob/" + image;
+      }
+
+    }]);
+    angular.element(document).ready(function() {
+      angular.bootstrap(document, ["resizeimage"]);
+    });
+  </script>
+</head>
+<body>
+  <div class="container">
+    <h1>resizeimage</h1>
+    <span ngf-select="setImage(entity, 'image', $file)" ngf-drop="setImage(entity, 'image', $file)">
+      <img class="img-responsive img-thumbnail" ng-src="{{getImage(entity.image)}}"><br>
+    </span>
+    <button class="btn btn-default" ng-disabled="!entity.image" ng-click="entity.image = null">画像を撤去</button>
+    <p>{{1+1}}</p>
+  </div>
+</body>
+</html>
