@@ -1,5 +1,7 @@
 package modules.config
 
+import org.scalatra.LifeCycle
+
 trait Config {
   def projectName:String = buildinfo.BuildInfo.name
 
@@ -8,13 +10,17 @@ trait Config {
   def webAppDirs:Array[String] = Array("src/main/webapp", "../htdocs")
 
   // Scalatra設定
-  def additionalScalatraBootstrapClasses:Array[Class[_ <: org.scalatra.LifeCycle]] = Array(
-    classOf[modules.h2.ScalatraBootstrap],
-    classOf[modules.scalikejdbc.ScalatraBootstrap],
-    classOf[modules.flyway.ScalatraBootstrap],
-    classOf[modules.highlight.ScalatraBootstrap],
-    classOf[modules.playground.ScalatraBootstrap]
-  )
+  def additionalScalatraBootstrapClasses:Array[Class[_ <: LifeCycle]] = {
+    (
+      Seq(
+        classOf[modules.h2.ScalatraBootstrap],
+        classOf[modules.scalikejdbc.ScalatraBootstrap],
+        classOf[modules.flyway.ScalatraBootstrap],
+        classOf[modules.highlight.ScalatraBootstrap]
+      ) ++
+      modules.reflect.getClassByFullName("modules.%s.ScalatraBootstrap".format(buildinfo.BuildInfo.name)).map(_.asInstanceOf[Class[LifeCycle]])
+    ).toArray
+  }
 
   // ScalikeJDBC設定
   def scalikeJDBCLogLevel = 'DEBUG
